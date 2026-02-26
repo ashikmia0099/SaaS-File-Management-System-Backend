@@ -1,0 +1,12 @@
+model SubscriptionPackage {
+    id               String   @id @default(uuid())
+    PackageName      String   @unique
+    MaxFolders       Int
+    MaxNestingFolder Int
+    AllowedFileTypes String[]
+    MaxFileSizeMB    Int
+    TotalFileLimit   Int
+    FilePerFolder    Int
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+}
