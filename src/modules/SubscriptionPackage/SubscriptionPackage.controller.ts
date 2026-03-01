@@ -8,7 +8,6 @@ const SubscriptionPackageControllerPost = async (req: Request, res: Response, ne
     try {
         const subscriptionData = await SubscriptionPackageService.SubscriptionPackageServicePost(req.body)
         res.status(201).json({ success: true, result: subscriptionData })
-
     } catch (err) {
         console.log('this is error ')
     }
@@ -24,6 +23,27 @@ const SubscriptionPackageControllerGet = async (req: Request, res: Response, nex
         res.status(500).json({
             success: false,
             message: "Something want wrong",
+            err: err instanceof Error ? err.message : err
+        })
+    }
+}
+
+
+// get single subscription package controller logic 
+
+const SingleSubscriptionPackageController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const id = req.params.id as string
+
+        const SingleSubscriptionData = await SubscriptionPackageService.SingleSubscriptionPackageService(id)
+        res.status(200).json({
+            success: true,
+            data: SingleSubscriptionData
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
             err: err instanceof Error ? err.message : err
         })
     }
@@ -75,6 +95,7 @@ const SubscriptionPackageControllerUpdate = async (req: Request, res: Response, 
 export const SubscriptionPackageController = {
     SubscriptionPackageControllerPost,
     SubscriptionPackageControllerGet,
+    SingleSubscriptionPackageController,
     SubscriptionPackageControllerDelete,
     SubscriptionPackageControllerUpdate
 }

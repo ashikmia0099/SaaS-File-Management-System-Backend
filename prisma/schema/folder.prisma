@@ -1,0 +1,10 @@
+model Folder {
+    id             String              @id @default(uuid())
+    name           String
+    userId         String
+    packageId      String?
+    parentFolderId String?
+    createdAt      DateTime            @default(now())
+    user           User                @relation(fields: [userId], references: [id])
+    file File[]
+}

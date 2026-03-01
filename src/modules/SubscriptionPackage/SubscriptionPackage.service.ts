@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma"
 
 
-
+// post Service logic 
 const SubscriptionPackageServicePost = async (data: {
     PackageName: string,
     MaxFolders: number,
@@ -17,14 +17,13 @@ const SubscriptionPackageServicePost = async (data: {
             data: data
         })
         return createSubscription
-
     } catch (err) {
         console.log("error in SubscriptionPackageServicePost", err)
         throw err
     }
 }
 
-
+// Get all data service logic 
 const SubscriptionPackageServiceGet = async () => {
     try {
         const getResult = await prisma.subscriptionPackage.findMany()
@@ -35,6 +34,27 @@ const SubscriptionPackageServiceGet = async () => {
 }
 
 
+// get Single subscribe package data service logic 
+
+const SingleSubscriptionPackageService = async (id: string) => {
+
+    try {
+        if (!id) {
+            throw new Error("Subscription package not found")
+        }
+        const CheckData = await prisma.subscriptionPackage.findUnique({
+            where: { id }
+        })
+        return CheckData
+        
+    } catch (err) {
+        console.log("error")
+    }
+}
+
+
+// Delete Single subscribe package data service logic 
+
 const SubscriptionPackageServiceDelete = async (id: string) => {
 
     try {
@@ -42,12 +62,12 @@ const SubscriptionPackageServiceDelete = async (id: string) => {
             where: { id }
         })
 
-        if(!CheckData){
+        if (!CheckData) {
             throw new Error("Subscription not found")
         }
 
         const deleteData = await prisma.subscriptionPackage.delete({
-            where : {id}
+            where: { id }
         })
         return deleteData
 
@@ -56,21 +76,22 @@ const SubscriptionPackageServiceDelete = async (id: string) => {
     }
 }
 
+// update subscribe package data service logic 
 
-const SubscriptionPackageServiceUpdate = async (id: string, payload : any) => {
+const SubscriptionPackageServiceUpdate = async (id: string, payload: any) => {
 
     try {
         const CheckData = await prisma.subscriptionPackage.findUnique({
             where: { id }
         })
 
-        if(!CheckData){
+        if (!CheckData) {
             throw new Error("Subscription not found")
         }
 
         const UpdateData = await prisma.subscriptionPackage.update({
-            where : {id},
-            data : payload
+            where: { id },
+            data: payload
         })
         return UpdateData
 
@@ -83,6 +104,7 @@ const SubscriptionPackageServiceUpdate = async (id: string, payload : any) => {
 export const SubscriptionPackageService = {
     SubscriptionPackageServicePost,
     SubscriptionPackageServiceGet,
+    SingleSubscriptionPackageService,
     SubscriptionPackageServiceDelete,
     SubscriptionPackageServiceUpdate
 }

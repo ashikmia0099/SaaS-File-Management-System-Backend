@@ -1,3 +1,5 @@
+// this model create for admin can create subscription package 
+
 model SubscriptionPackage {
     id               String   @id @default(uuid())
     PackageName      String   @unique
@@ -9,4 +11,5 @@ model SubscriptionPackage {
     FilePerFolder    Int
     createdAt        DateTime @default(now())
     updatedAt        DateTime @updatedAt
+    selectedUser UserSelectedPackage[]
 }

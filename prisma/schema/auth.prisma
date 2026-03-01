@@ -1,0 +1,18 @@
+// this model create for user authenication 
+
+model User {
+    id               String                @id @default(uuid())
+    name             String
+    email            String                @unique
+    password         String
+    role             Role                  @default(USER)
+    createdAt        DateTime              @default(now())
+    selectedPackages UserSelectedPackage[]
+    folder           Folder[]
+    file File[]
+}
+
+enum Role {
+    USER
+    ADMIN
+}

@@ -1,0 +1,21 @@
+model File {
+    id               String    @id @default(uuid())
+    originalFileName String
+    renameFileName   String
+    filePath         String
+    uploadFilePath   Int
+    uploadFileTypes  FileTypes
+    userId           String
+    folderId         String
+    createdAt        DateTime  @default(now())
+    updatedAt        DateTime  @updatedAt
+    user             User      @relation(fields: [userId], references: [id])
+    folder           Folder    @relation(fields: [folderId], references: [id])
+}
+
+enum FileTypes {
+    image
+    video
+    audio
+    pdf
+}
