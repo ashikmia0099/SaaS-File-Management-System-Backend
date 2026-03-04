@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { folderService } from "./Folder.service";
-import { prisma } from "../../lib/prisma";
 
 
 // folder controller post 

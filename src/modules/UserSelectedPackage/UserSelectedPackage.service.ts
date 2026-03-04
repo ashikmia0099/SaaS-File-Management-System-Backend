@@ -1,7 +1,5 @@
 import { prisma } from "../../lib/prisma"
 
-
-
 // get login user selected package 
 
 const getSelectedPackageByUserWise = async (userId : string) => {
