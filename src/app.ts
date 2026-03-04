@@ -6,6 +6,7 @@ import { UserSelectedPackageRouter } from "./modules/UserSelectedPackage/UserSel
 import { FolderRouter } from "./modules/Folder/Folder.router";
 import { FilesRouter } from "./modules/Files/Files.router";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import { notFound } from "./middleware/NotFound404";
 
 
 const app: Application = express()
@@ -28,7 +29,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!')
 })
 
-
+app.use(notFound)
 // error handler middleware
 
 app.use(globalErrorHandler)

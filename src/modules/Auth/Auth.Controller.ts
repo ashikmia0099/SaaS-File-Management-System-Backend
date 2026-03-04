@@ -9,10 +9,7 @@ const GetRegisterUserController = async (req: Request, res: Response, next: Next
         const getalluser = await AuthService.GetRegisterUserService()
         res.status(200).json({ success: true, data: getalluser });
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        });
+        next(err);
     };
 }
 
@@ -23,10 +20,7 @@ const RegisterController = async (req: Request, res: Response, next: NextFunctio
         const userData = await AuthService.RegisterService(req.body);
         res.status(201).json({ success: true, data: userData });
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        });
+        next(err)
     };
 };
 
@@ -44,10 +38,7 @@ const UpdateUserDataController = async (req: Request, res: Response, next: NextF
             data: userDataupdate
         })
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        })
+       next(err)
     }
 }
 
@@ -63,17 +54,17 @@ const LoginController = async(req: Request, res: Response, next : NextFunction) 
             data : userData
         });
     }catch(err){
-        res.status(500).json({
-            success : false,
-            err : err instanceof Error ? err.message : err
-        })
+       next(err)
     }
 }
+
+
 
 
 export const AuthContrller = {
     RegisterController,
     GetRegisterUserController,
     UpdateUserDataController,
-    LoginController
+    LoginController,
+    
 }

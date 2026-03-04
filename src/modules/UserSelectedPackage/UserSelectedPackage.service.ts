@@ -6,8 +6,6 @@ import { prisma } from "../../lib/prisma"
 
 const getSelectedPackageByUserWise = async (userId : string) => {
     try {
-
-        console.log("Thisis service user id", userId)
         // find all selected package for this login user 
 
         const getResult = await prisma.userSelectedPackage.findMany({
@@ -19,14 +17,10 @@ const getSelectedPackageByUserWise = async (userId : string) => {
             }
         });
 
-        if(!getResult || getResult.length === 0){
-            throw new Error("User not selected any package")
-        };
-
         return getResult;
         
-    } catch {
-        throw new Error("Failed to get subscription package")
+    } catch(err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -66,8 +60,8 @@ const userSelectedPackageSericePost = async (userId: string, packageId: string) 
 
         return newSubscripiton
 
-    } catch (err) {
-        throw new Error("Failed to create subscription")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 

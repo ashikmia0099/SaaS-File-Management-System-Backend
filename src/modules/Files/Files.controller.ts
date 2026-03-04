@@ -25,11 +25,7 @@ const createFilesController = async (req: Request, res: Response, next: NextFunc
         })
 
     } catch (err : any) {
-        console.error("Error in createFilesController:", err.message);
-        res.status(500).json({
-            success: false,
-            message: err.message || "Something went wrong"
-        });
+        next(err)
     }
 }
 
@@ -41,26 +37,26 @@ const GetAllfilesController = async (req: Request, res: Response, next: NextFunc
         res.status(200).json({ success: true, data: result })
 
     } catch (err) {
-        console.log("files data not found")
+        next(err)
     }
 }
 
 
-// get user wise created folder 
+//  folder wise 
 const GetUserWiseUploadedFilesController = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const userId = (req as any).user.id;
+        const folderId = req.params.folderId as string;
 
-        const userId = req.params.id as string;
+        const result = await FilesService.GetUserWiseUploadedFilesService(userId, folderId);
 
-        const Result = await FilesService.GetUserWiseUploadedFilesService(userId);
         res.status(200).json({
             success: true,
-            data: Result
+            data: result
         });
-        return Result
 
-    } catch (err) {
-        throw new Error("This user id is not found")
+    } catch (err: any) {
+        next(err)
     }
 }
 
@@ -89,7 +85,7 @@ const DeleteUserWiseUploadedFilesController = async (req: Request, res: Response
         return fileResult
 
     } catch (err) {
-        throw new Error("This user id is not found")
+       next(err)
     }
 }
 
@@ -112,7 +108,7 @@ const RenameFilesNameController = async (req: Request, res: Response, next: Next
         })
         return fileResult
     } catch (err) {
-        throw new Error("This user id is not found")
+        next(err)
     }
 }
 

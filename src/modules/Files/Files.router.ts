@@ -8,7 +8,7 @@ const router = Router()
 
 
 router.get("/", FilesController.GetAllfilesController)
-router.get("/:id",AuthMiddleware, FilesController.GetUserWiseUploadedFilesController)
+router.get("/:folderId", AuthMiddleware, FilesController.GetUserWiseUploadedFilesController)
 router.post("/upload/:id", AuthMiddleware, upload.single('file'), FilesController.createFilesController)
 router.delete("/delete/:fileId",AuthMiddleware,FilesController.DeleteUserWiseUploadedFilesController)
 router.patch("/rename/:fileId", AuthMiddleware,FilesController.RenameFilesNameController)

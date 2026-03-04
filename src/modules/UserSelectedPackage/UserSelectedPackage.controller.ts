@@ -30,10 +30,7 @@ const userSelectedPackageControllerPost = async (req: Request, res: Response, ne
         })
 
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        })
+       next(err);
     }
 
 }
@@ -46,7 +43,7 @@ const userSelectedPackageControllerGet = async (req: Request, res: Response, nex
         res.status(200).json({ success: true, data: result })
 
     } catch (err) {
-        console.log("userSelectedPackageControllerPost data not found")
+        next(err);
     }
 }
 
@@ -66,7 +63,7 @@ const getSelectedPackageByUserWise = async (req: Request, res: Response, next: N
         })
 
     } catch (err) {
-        console.log("user not found")
+        next(err);
     }
 }
 

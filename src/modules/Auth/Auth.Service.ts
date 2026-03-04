@@ -8,8 +8,8 @@ const GetRegisterUserService = async () => {
     try {
         const GetregisterUser = await prisma.user.findMany();
         return GetregisterUser
-    } catch (err) {
-        throw err
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -33,8 +33,8 @@ const RegisterService = async (data: {
         });
         return registerUser
 
-    } catch (err) {
-        throw err
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -63,8 +63,8 @@ const UpdateUserDataService = async (id: string, data: {
         })
         return UpdateData
 
-    } catch (err) {
-        throw new Error
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -115,14 +115,17 @@ const LoginService = async (data: {
                 role: findEmail.role
             }
         }
-    } catch (err) {
-        throw new Error
+    } catch (err : any) {
+        throw new Error( err.message)
     }
 }
+
+
 
 export const AuthService = {
     RegisterService,
     GetRegisterUserService,
     UpdateUserDataService,
     LoginService
+
 }

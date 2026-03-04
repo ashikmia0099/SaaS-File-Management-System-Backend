@@ -112,23 +112,29 @@ const GetAllfilesService = async () => {
     try {
         const result = await prisma.file.findMany()
         return result
-    } catch (err) {
-        throw new Error('Faild to fetch all files')
+    } catch (err: any) {
+        throw new Error(err.message)
     }
 }
 
 
 
-// get user wise created folder 
-const GetUserWiseUploadedFilesService = async (userId: string) => {
+// folder wise file get 
+const GetUserWiseUploadedFilesService = async (userId: string, folderId: string) => {
     try {
         const getFiles = await prisma.file.findMany({
-            where: { userId },
+            where: {
+                userId,
+                folderId
+            },
+            orderBy: {
+                createdAt: "desc"
+            }
         })
         return getFiles
 
-    } catch (err) {
-        throw new Error("this files data is not found")
+    } catch (err: any) {
+        throw new Error(err.message)
     }
 }
 
@@ -151,13 +157,13 @@ const DeleteUserWiseCreatedAllFilesService = async (userId: string, fileId: stri
         })
         return deletefile
 
-    } catch (err) {
-        throw new Error("this folder is not found")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
 
-// update folder name
+// update file name
 const RenameFileNameSerivce = async (userId: string, fileId: string, originalFileName: string) => {
     try {
 
@@ -171,7 +177,7 @@ const RenameFileNameSerivce = async (userId: string, fileId: string, originalFil
         }
 
         // update file name
-        const fileRename = prisma.file.update({
+        const fileRename = await prisma.file.update({
             where: { id: fileId },
             data: {
                 originalFileName: originalFileName,

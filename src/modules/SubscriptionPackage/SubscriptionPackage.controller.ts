@@ -8,8 +8,8 @@ const SubscriptionPackageControllerPost = async (req: Request, res: Response, ne
     try {
         const subscriptionData = await SubscriptionPackageService.SubscriptionPackageServicePost(req.body)
         res.status(201).json({ success: true, result: subscriptionData })
-    } catch (err) {
-        console.log('this is error ')
+    } catch (err : any) {
+        next(err)
     }
 }
 
@@ -20,11 +20,7 @@ const SubscriptionPackageControllerGet = async (req: Request, res: Response, nex
         const getSubscriptionData = await SubscriptionPackageService.SubscriptionPackageServiceGet()
         res.status(200).json(getSubscriptionData);
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: "Something want wrong",
-            err: err instanceof Error ? err.message : err
-        })
+       next(err)
     }
 }
 
@@ -42,10 +38,7 @@ const SingleSubscriptionPackageController = async (req: Request, res: Response, 
             data: SingleSubscriptionData
         })
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        })
+       next(err)
     }
 }
 
@@ -63,10 +56,7 @@ const SubscriptionPackageControllerDelete = async (req: Request, res: Response, 
             data: DeleteSubscriptionData
         })
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        })
+       next(err)
     }
 }
 
@@ -85,10 +75,7 @@ const SubscriptionPackageControllerUpdate = async (req: Request, res: Response, 
             data: UpdateSubscriptionData
         })
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        })
+        next(err)
     }
 }
 

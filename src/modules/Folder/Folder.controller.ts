@@ -26,10 +26,7 @@ const FolderControllerPost = async (req: Request, res: Response, next: NextFunct
         })
 
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            err: err instanceof Error ? err.message : err
-        })
+       next(err)
     }
 }
 
@@ -41,7 +38,7 @@ const FolderControllerGet = async (req: Request, res: Response, next: NextFuncti
         res.status(200).json({ success: true, data: result })
 
     } catch (err) {
-        console.log("FolderControllerGet data not found")
+       next(err)
     }
 }
 
@@ -61,38 +58,37 @@ const GetUserWiseCreatedAllFolderController = async (req: Request, res: Response
 
         return folderResult
 
-    } catch (err) {
-        throw new Error("This user id is not found")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
 
 
 // delete folder
-const DeleteUserWiseCreatedFolderController = async (req: Request, res: Response, next: NextFunction) => {
-    try {
 
+const DeleteUserWiseCreatedFolderController = async (req: Request, res: Response) => {
+    try {
         const userId = (req as any).user?.id;
         const folderId = req.params.folderId as string;
 
         if (!userId) {
-            throw new Error("User does not exist")
+            return res.status(400).json({ success: false, message: "User does not exist" });
         }
 
         if (!folderId) {
-            throw new Error("Folder id is required")
+            return res.status(400).json({ success: false, message: "Folder id is required" });
         }
 
-        const folderResult = await folderService.DeleteUserWiseCreatedAllFolderService(userId, folderId)
+        const folderResult = await folderService.DeleteUserWiseCreatedAllFolderService(userId, folderId);
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: folderResult
-        })
-        return folderResult
+        });
 
-    } catch (err) {
-        throw new Error("This user id is not found")
+    } catch (err: any) {
+        throw new Error(err.message)
     }
 }
 
@@ -121,8 +117,8 @@ const RenameFolderNameController = async (req: Request, res: Response, next: Nex
         })
         return folderResult
 
-    } catch (err) {
-        throw new Error("This user id is not found")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 

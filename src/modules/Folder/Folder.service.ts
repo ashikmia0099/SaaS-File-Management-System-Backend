@@ -1,8 +1,5 @@
 import { prisma } from "../../lib/prisma"
 
-
-
-
 // create folder
 const folderServicePost = async (data: {
     userId: string,
@@ -76,8 +73,8 @@ const folderServicePost = async (data: {
 
         return createfolder
 
-    } catch (err) {
-        throw new Error("Failed to create Folder")
+    } catch (err: any) {
+        throw new Error(err.message)
     }
 
 }
@@ -87,8 +84,8 @@ const folderServiceGet = async () => {
     try {
         const result = await prisma.folder.findMany()
         return result
-    } catch (err) {
-        throw new Error('Faild to fetch folder')
+    } catch (err: any) {
+        throw new Error(err.message)
     }
 }
 
@@ -101,8 +98,8 @@ const GetUserWiseCreatedAllFolderService = async (userId: string) => {
         })
         return getFolder
 
-    } catch (err) {
-        throw new Error("this folder is not found")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -131,27 +128,27 @@ const DeleteUserWiseCreatedAllFolderService = async (userId: string, folderId: s
             await DeleteUserWiseCreatedAllFolderService(userId, sub.id)
         }
 
-        // ToDo  start  : this owrk when i am delete a folder . which time this folder under store any files link image , video which time delete this all all propary in this folder 
+        // folder under all file delete
+        const deletedFiles = await prisma.file.deleteMany({
+            where: { folderId: folderId }
+        });
 
-        // await prisma.file.deleteMany({
-        //     where: { folderId: folderId }
-        // });
 
-        // ToDo end 
-
-         const deleteFolder = prisma.folder.delete({
+        const deleteFolder = await prisma.folder.delete({
             where: { id: folderId }
         })
 
-        return deleteFolder
+        return { deleteFolder, deletedFiles }
 
-    } catch (err) {
-        throw new Error("this folder is not found")
+    } catch (err: any) {
+        throw new Error(err.message)
     }
 }
 
+
+
 // update folder name
-const RenameFolderNameSerivce = async (userId: string, folderId: string, name : string) => {
+const RenameFolderNameSerivce = async (userId: string, folderId: string, name: string) => {
     try {
 
         const folder = await prisma.folder.findUnique({
@@ -166,16 +163,15 @@ const RenameFolderNameSerivce = async (userId: string, folderId: string, name : 
         // update folder name
         const FolderRename = prisma.folder.update({
             where: { id: folderId },
-            data : {name}
+            data: { name }
         })
 
         return FolderRename
 
-    } catch (err) { }
+    } catch (err : any) { 
+        throw new Error(err.message)
+    }
 }
-
-
-
 
 export const folderService = {
     folderServicePost,

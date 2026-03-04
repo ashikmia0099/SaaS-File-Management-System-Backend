@@ -1,6 +1,4 @@
-
 import cloudinary from '../../../config/cloudinary';
-
 
 
 export const UploadFileToCloudinery = async(

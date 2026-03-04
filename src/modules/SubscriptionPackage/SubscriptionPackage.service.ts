@@ -17,9 +17,8 @@ const SubscriptionPackageServicePost = async (data: {
             data: data
         })
         return createSubscription
-    } catch (err) {
-        console.log("error in SubscriptionPackageServicePost", err)
-        throw err
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -28,8 +27,8 @@ const SubscriptionPackageServiceGet = async () => {
     try {
         const getResult = await prisma.subscriptionPackage.findMany()
         return getResult
-    } catch (err) {
-        throw new Error('Faild to fetch subscription package')
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -47,8 +46,8 @@ const SingleSubscriptionPackageService = async (id: string) => {
         })
         return CheckData
         
-    } catch (err) {
-        console.log("error")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -71,8 +70,8 @@ const SubscriptionPackageServiceDelete = async (id: string) => {
         })
         return deleteData
 
-    } catch (err) {
-        console.log("error")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
@@ -95,8 +94,8 @@ const SubscriptionPackageServiceUpdate = async (id: string, payload: any) => {
         })
         return UpdateData
 
-    } catch (err) {
-        console.log("error")
+    } catch (err : any) {
+        throw new Error(err.message)
     }
 }
 
