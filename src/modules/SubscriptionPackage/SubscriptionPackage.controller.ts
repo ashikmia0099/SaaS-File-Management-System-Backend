@@ -44,21 +44,20 @@ const SingleSubscriptionPackageController = async (req: Request, res: Response, 
 
 // delete controller logic 
 
-const SubscriptionPackageControllerDelete = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+ const SubscriptionPackageControllerDelete = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+    const deleted = await SubscriptionPackageService.SubscriptionPackageServiceDelete(id);
 
-        const id = req.params.id as string
-
-        const DeleteSubscriptionData = await SubscriptionPackageService.SubscriptionPackageServiceDelete(id)
-        res.status(200).json({
-            success: true,
-            message: "Subscription package deleted successfully",
-            data: DeleteSubscriptionData
-        })
-    } catch (err) {
-       next(err)
-    }
-}
+    res.status(200).json({
+      success: true,
+      message: "Subscription package deleted successfully",
+      data: deleted
+    });
+  } catch (err: any) {
+    next(err); // Global error handler catch করবে
+  }
+};
 
 // update controller logic 
 

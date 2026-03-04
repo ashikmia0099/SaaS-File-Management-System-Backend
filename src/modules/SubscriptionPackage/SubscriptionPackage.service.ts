@@ -1,3 +1,4 @@
+import { Prisma } from "../../../generated/prisma/client"
 import { prisma } from "../../lib/prisma"
 
 
@@ -17,7 +18,7 @@ const SubscriptionPackageServicePost = async (data: {
             data: data
         })
         return createSubscription
-    } catch (err : any) {
+    } catch (err: any) {
         throw new Error(err.message)
     }
 }
@@ -27,7 +28,7 @@ const SubscriptionPackageServiceGet = async () => {
     try {
         const getResult = await prisma.subscriptionPackage.findMany()
         return getResult
-    } catch (err : any) {
+    } catch (err: any) {
         throw new Error(err.message)
     }
 }
@@ -45,8 +46,8 @@ const SingleSubscriptionPackageService = async (id: string) => {
             where: { id }
         })
         return CheckData
-        
-    } catch (err : any) {
+
+    } catch (err: any) {
         throw new Error(err.message)
     }
 }
@@ -55,26 +56,35 @@ const SingleSubscriptionPackageService = async (id: string) => {
 // Delete Single subscribe package data service logic 
 
 const SubscriptionPackageServiceDelete = async (id: string) => {
+    const packageData = await prisma.subscriptionPackage.findUnique({
+        where: { id }
+    });
 
-    try {
-        const CheckData = await prisma.subscriptionPackage.findUnique({
-            where: { id }
-        })
-
-        if (!CheckData) {
-            throw new Error("Subscription not found")
-        }
-
-        const deleteData = await prisma.subscriptionPackage.delete({
-            where: { id }
-        })
-        return deleteData
-
-    } catch (err : any) {
-        throw new Error(err.message)
+    if (!packageData) {
+        throw new Error("Subscription package not found");
     }
-}
 
+    // check folders
+    const relatedFoldersCount = await prisma.folder.count({
+        where: { packageId: id }
+    });
+
+    // check files via folder
+    const relatedFilesCount = await prisma.file.count({
+        where: { folder: { packageId: id } }
+    });
+
+    if (relatedFoldersCount > 0 || relatedFilesCount > 0) {
+        throw new Error("Cannot delete subscription: related data exists");
+        
+    }
+
+     const deletepackage =  await prisma.subscriptionPackage.delete({
+        where: { id }
+    });
+
+    return deletepackage
+};
 // update subscribe package data service logic 
 
 const SubscriptionPackageServiceUpdate = async (id: string, payload: any) => {
@@ -94,7 +104,7 @@ const SubscriptionPackageServiceUpdate = async (id: string, payload: any) => {
         })
         return UpdateData
 
-    } catch (err : any) {
+    } catch (err: any) {
         throw new Error(err.message)
     }
 }
