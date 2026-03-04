@@ -11,6 +11,10 @@ import { notFound } from "./middleware/NotFound404";
 
 const app: Application = express()
 
+// app.use(cors({
+//     origin: "http://localhost:3000",
+// }));
+
 app.use(cors({
     origin: "https://saa-s-file-management-system-fronte-eta.vercel.app",
 }));
